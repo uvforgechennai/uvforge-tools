@@ -9,6 +9,22 @@ var UV_LOGO_URL = 'https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png';
 var UV_PAGE_SIZE = [595.28, 841.89]; // A4 in points
 var UV_MARGIN = 40;
 
+/* pdf-lib's built-in fonts (Helvetica etc.) use WinAnsi encoding — Latin-1
+   only. Any character outside that range (₹, curly quotes, em dashes,
+   emoji...) throws and aborts the whole PDF. This can happen with our own
+   text (₹ from formatINR) or with anything a user types into a name/address/
+   item-description field, so every string drawn into a PDF goes through
+   this first: swap the common cases to a safe equivalent, strip the rest. */
+function pdfSafeText(str){
+  str = String(str);
+  str = str.replace(/₹/g, 'Rs. ')
+    .replace(/[‘’]/g, "'")
+    .replace(/[“”]/g, '"')
+    .replace(/[–—]/g, '-')
+    .replace(/…/g, '...');
+  return str.replace(/[^\x00-\xFF]/g, '?');
+}
+
 async function uvPdfCreate(){
   var PDFDocument = PDFLib.PDFDocument, StandardFonts = PDFLib.StandardFonts;
   var doc = await PDFDocument.create();
@@ -92,7 +108,7 @@ function uvPdfDrawTable(ctx, layout, x, startY, columns, rows){
     var cx = x;
     rows[r].forEach(function(cell, i){
       var col = columns[i];
-      var s = String(cell);
+      var s = pdfSafeText(cell);
       var tw = ctx.font.widthOfTextAtSize(s, 9.5);
       var tx = col.align === 'right' ? cx + col.width - tw - 6 : cx + 6;
       page.drawText(s, { x: tx, y: y - rowH + 14, size: 9.5, font: ctx.font, color: text });

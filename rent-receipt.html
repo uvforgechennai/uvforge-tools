@@ -134,7 +134,7 @@ async function downloadReceiptPdf(){
 
   var lines = [
     'Received with thanks from: ' + lastReceipt.tenant,
-    'A sum of: ' + formatINR(lastReceipt.amount),
+    'A sum of: ' + formatINRForPdf(lastReceipt.amount),
     'Towards rent for the month of: ' + lastReceipt.month,
     '',
     'Property Address:',
@@ -144,7 +144,7 @@ async function downloadReceiptPdf(){
     'Landlord Name: ' + lastReceipt.landlord
   ];
   lines.forEach(function(l){
-    page.drawText(l, { x: layout.margin, y: y, size: 12, font: ctx.font, maxWidth: layout.width - layout.margin*2 });
+    page.drawText(pdfSafeText(l), { x: layout.margin, y: y, size: 12, font: ctx.font, maxWidth: layout.width - layout.margin*2 });
     y -= 20;
   });
 

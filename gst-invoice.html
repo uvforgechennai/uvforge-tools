@@ -254,10 +254,10 @@ async function downloadInvoicePdf(){
   page.drawText('Buyer', { x: layout.margin + colW + 20, y: y, size: 11, font: ctx.fontBold });
   y -= 16;
   [inv.seller.name, inv.seller.address, 'GSTIN: ' + inv.seller.gstin, 'State: ' + inv.seller.state].forEach(function(l, i){
-    page.drawText(l, { x: layout.margin, y: y - i*14, size: 9.5, font: ctx.font, maxWidth: colW });
+    page.drawText(pdfSafeText(l), { x: layout.margin, y: y - i*14, size: 9.5, font: ctx.font, maxWidth: colW });
   });
   [inv.buyer.name, inv.buyer.address, 'GSTIN: ' + inv.buyer.gstin, 'State: ' + inv.buyer.state].forEach(function(l, i){
-    page.drawText(l, { x: layout.margin + colW + 20, y: y - i*14, size: 9.5, font: ctx.font, maxWidth: colW });
+    page.drawText(pdfSafeText(l), { x: layout.margin + colW + 20, y: y - i*14, size: 9.5, font: ctx.font, maxWidth: colW });
   });
   y -= 4*14 + 16;
 
@@ -269,7 +269,7 @@ async function downloadInvoicePdf(){
     { header: 'Amount', width: 115, align: 'right' }
   ];
   var rows = inv.lines.map(function(l){
-    return [l.desc, l.qty, formatINR(l.rate), l.gst + '%', formatINR(l.amount + l.gstAmt)];
+    return [l.desc, l.qty, formatINRForPdf(l.rate), l.gst + '%', formatINRForPdf(l.amount + l.gstAmt)];
   });
   var pos = uvPdfDrawTable(ctx, layout, layout.margin, y, columns, rows);
   page = pos.page;
@@ -278,15 +278,15 @@ async function downloadInvoicePdf(){
   var gstLabel = inv.supplyType === 'intra' ? 'CGST + SGST' : 'IGST';
   var totalsX = layout.width - layout.margin - 200;
   [
-    ['Subtotal', formatINR(inv.subtotal)],
-    [gstLabel, formatINR(inv.totalGst)]
+    ['Subtotal', formatINRForPdf(inv.subtotal)],
+    [gstLabel, formatINRForPdf(inv.totalGst)]
   ].forEach(function(row){
     page.drawText(row[0], { x: totalsX, y: y, size: 10, font: ctx.font });
     page.drawText(row[1], { x: layout.width - layout.margin - ctx.font.widthOfTextAtSize(row[1],10), y: y, size: 10, font: ctx.font });
     y -= 16;
   });
   page.drawText('Grand Total', { x: totalsX, y: y - 6, size: 13, font: ctx.fontBold });
-  var gtText = formatINR(inv.grandTotal);
+  var gtText = formatINRForPdf(inv.grandTotal);
   page.drawText(gtText, { x: layout.width - layout.margin - ctx.fontBold.widthOfTextAtSize(gtText,13), y: y - 6, size: 13, font: ctx.fontBold, color: PDFLib.rgb(0.145,0.388,0.922) });
 
   await uvPdfDownload(ctx, 'gst-invoice-' + inv.invoiceNo + '.pdf');

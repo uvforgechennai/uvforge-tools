@@ -139,12 +139,12 @@ async function downloadSipPdf(){
   page.drawText('SIP Returns Summary', { x: layout.margin, y: y, size: 18, font: ctx.fontBold });
   y -= 26;
   var lines = [
-    'Monthly SIP: ' + formatINR(lastResult.monthly),
+    'Monthly SIP: ' + formatINRForPdf(lastResult.monthly),
     'Expected Return: ' + lastResult.rate + '% per annum',
     'Time Period: ' + lastResult.years + ' years',
-    'Total Invested: ' + formatINR(lastResult.result.invested),
-    'Estimated Returns: ' + formatINR(lastResult.result.returns),
-    'Total Value: ' + formatINR(lastResult.result.value)
+    'Total Invested: ' + formatINRForPdf(lastResult.result.invested),
+    'Estimated Returns: ' + formatINRForPdf(lastResult.result.returns),
+    'Total Value: ' + formatINRForPdf(lastResult.result.value)
   ];
   lines.forEach(function(l){ page.drawText(l, { x: layout.margin, y: y, size: 11, font: ctx.font }); y -= 16; });
   y -= 10;
@@ -154,7 +154,7 @@ async function downloadSipPdf(){
     { header: 'Invested', width: 205, align: 'right' },
     { header: 'Value', width: 210, align: 'right' }
   ];
-  var rows = lastResult.result.yearRows.map(function(r){ return ['Year ' + r.year, formatINR(r.invested), formatINR(r.value)]; });
+  var rows = lastResult.result.yearRows.map(function(r){ return ['Year ' + r.year, formatINRForPdf(r.invested), formatINRForPdf(r.value)]; });
   uvPdfDrawTable(ctx, layout, layout.margin, y, columns, rows);
 
   await uvPdfDownload(ctx, 'sip-summary.pdf');

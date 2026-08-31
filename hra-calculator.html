@@ -133,17 +133,17 @@ async function downloadHraPdf(){
   page.drawText('HRA Exemption Summary', { x: layout.margin, y: y, size: 18, font: ctx.fontBold });
   y -= 26;
   var lines = [
-    'Basic Salary: ' + formatINR(lastResult.basic) + ' / year',
-    'HRA Received: ' + formatINR(lastResult.hraReceived) + ' / year',
-    'Rent Paid: ' + formatINR(lastResult.rentPaid) + ' / year',
+    'Basic Salary: ' + formatINRForPdf(lastResult.basic) + ' / year',
+    'HRA Received: ' + formatINRForPdf(lastResult.hraReceived) + ' / year',
+    'Rent Paid: ' + formatINRForPdf(lastResult.rentPaid) + ' / year',
     'City Type: ' + (lastResult.cityType === 'metro' ? 'Metro' : 'Non-Metro'),
     '',
-    'Actual HRA received: ' + formatINR(lastResult.byActual),
-    'Rent paid - 10% of basic: ' + formatINR(lastResult.byRent),
-    (lastResult.cityType==='metro'?'50':'40') + '% of basic salary: ' + formatINR(lastResult.byBasic),
+    'Actual HRA received: ' + formatINRForPdf(lastResult.byActual),
+    'Rent paid - 10% of basic: ' + formatINRForPdf(lastResult.byRent),
+    (lastResult.cityType==='metro'?'50':'40') + '% of basic salary: ' + formatINRForPdf(lastResult.byBasic),
     '',
-    'HRA Exemption: ' + formatINR(lastResult.exemption),
-    'Taxable HRA: ' + formatINR(lastResult.taxable)
+    'HRA Exemption: ' + formatINRForPdf(lastResult.exemption),
+    'Taxable HRA: ' + formatINRForPdf(lastResult.taxable)
   ];
   lines.forEach(function(l){ page.drawText(l, { x: layout.margin, y: y, size: 11, font: ctx.font }); y -= 16; });
   await uvPdfDownload(ctx, 'hra-summary.pdf');

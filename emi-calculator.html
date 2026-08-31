@@ -193,12 +193,12 @@ async function downloadEmiPdf(){
   page.drawText('EMI Amortization Schedule', { x: layout.margin, y: y, size: 18, font: ctx.fontBold });
   y -= 26;
   var lines = [
-    'Loan Amount: ' + formatINR(lastResult.P),
+    'Loan Amount: ' + formatINRForPdf(lastResult.P),
     'Interest Rate: ' + lastResult.rate + '% per annum',
     'Tenure: ' + lastResult.months + ' months',
-    'Monthly EMI: ' + formatINR(lastResult.result.emi),
-    'Total Interest: ' + formatINR(lastResult.result.totalInterest),
-    'Total Payment: ' + formatINR(lastResult.result.totalPayment)
+    'Monthly EMI: ' + formatINRForPdf(lastResult.result.emi),
+    'Total Interest: ' + formatINRForPdf(lastResult.result.totalInterest),
+    'Total Payment: ' + formatINRForPdf(lastResult.result.totalPayment)
   ];
   lines.forEach(function(l){
     page.drawText(l, { x: layout.margin, y: y, size: 11, font: ctx.font });
@@ -213,7 +213,7 @@ async function downloadEmiPdf(){
     { header: 'Balance', width: 145, align: 'right' }
   ];
   var rows = lastResult.result.rows.map(function(r){
-    return [r.month, formatINR(r.principal), formatINR(r.interest), formatINR(r.balance)];
+    return [r.month, formatINRForPdf(r.principal), formatINRForPdf(r.interest), formatINRForPdf(r.balance)];
   });
   uvPdfDrawTable(ctx, layout, layout.margin, y, columns, rows);
 

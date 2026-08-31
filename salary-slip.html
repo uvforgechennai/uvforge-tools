@@ -150,7 +150,7 @@ async function downloadSlipPdf(){
     'Employee Name: ' + s.name,
     'Designation: ' + s.designation,
     'Company: ' + s.company
-  ].forEach(function(l){ page.drawText(l, { x: layout.margin, y: y, size: 11, font: ctx.font }); y -= 16; });
+  ].forEach(function(l){ page.drawText(pdfSafeText(l), { x: layout.margin, y: y, size: 11, font: ctx.font }); y -= 16; });
   y -= 16;
 
   var columns = [
@@ -160,17 +160,17 @@ async function downloadSlipPdf(){
     { header: 'Amount', width: 87, align: 'right' }
   ];
   var rows = [
-    ['Basic', formatINR(s.basic), 'PF', formatINR(s.pf)],
-    ['HRA', formatINR(s.hra), 'Professional Tax', formatINR(s.pt)],
-    ['Other Allowances', formatINR(s.allowances), 'TDS', formatINR(s.tds)],
-    ['Gross Earnings', formatINR(s.gross), 'Total Deductions', formatINR(s.deductions)]
+    ['Basic', formatINRForPdf(s.basic), 'PF', formatINRForPdf(s.pf)],
+    ['HRA', formatINRForPdf(s.hra), 'Professional Tax', formatINRForPdf(s.pt)],
+    ['Other Allowances', formatINRForPdf(s.allowances), 'TDS', formatINRForPdf(s.tds)],
+    ['Gross Earnings', formatINRForPdf(s.gross), 'Total Deductions', formatINRForPdf(s.deductions)]
   ];
   var pos = uvPdfDrawTable(ctx, layout, layout.margin, y, columns, rows);
   y = pos.y - 24;
   page = pos.page;
 
   page.drawRectangle({ x: layout.margin, y: y - 30, width: layout.width - layout.margin*2, height: 34, color: PDFLib.rgb(0.145,0.388,0.922) });
-  page.drawText('NET PAY: ' + formatINR(s.net), { x: layout.margin + 12, y: y - 20, size: 14, font: ctx.fontBold, color: PDFLib.rgb(1,1,1) });
+  page.drawText('NET PAY: ' + formatINRForPdf(s.net), { x: layout.margin + 12, y: y - 20, size: 14, font: ctx.fontBold, color: PDFLib.rgb(1,1,1) });
 
   await uvPdfDownload(ctx, 'salary-slip-' + s.month.replace(' ','-') + '.pdf');
 }

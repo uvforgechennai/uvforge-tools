@@ -46,6 +46,19 @@ function formatINR(num, decimals){
   });
 }
 
+/* ---- Same as formatINR but "Rs." instead of "₹" — pdf-lib's built-in
+   fonts use WinAnsi encoding and cannot render the ₹ glyph at all, so any
+   PDF text built with formatINR() throws "WinAnsi cannot encode ₹" mid-save.
+   Use this instead of formatINR() anywhere text is drawn into a PDF. ---- */
+function formatINRForPdf(num, decimals){
+  if(isNaN(num)) return 'Rs. 0';
+  decimals = decimals || 0;
+  return 'Rs. ' + Number(num).toLocaleString('en-IN', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  });
+}
+
 /* ---- Plain Indian-grouped number, no currency symbol ---- */
 function formatIndianNumber(num, decimals){
   decimals = decimals || 0;
