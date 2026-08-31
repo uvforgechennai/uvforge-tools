@@ -2,7 +2,6 @@
   "name": "uvforge-tools",
   "compatibility_date": "2026-08-31",
   "assets": {
-    "directory": ".",
-    "html_handling": "none"
+    "directory": "."
   }
 }
