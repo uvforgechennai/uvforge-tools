@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Salary Slip Generator — Download PDF Online India</title>
+<meta name="description" content="Free salary slip / payslip generator for India. Enter employee, basic, HRA, allowances and deductions (PF, PT, TDS) and download a professional payslip PDF instantly.">
+<link rel="canonical" href="https://tools.uvforge.in/salary-slip.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free Salary Slip Generator — Download PDF Online India">
+<meta property="og:description" content="Generate a professional salary slip PDF instantly, free.">
+<meta property="og:url" content="https://tools.uvforge.in/salary-slip.html">
+<meta property="og:image" content="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">
+{ "@context":"https://schema.org","@type":"WebApplication","name":"Salary Slip Generator","url":"https://tools.uvforge.in/salary-slip.html","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"publisher":{"@type":"Organization","name":"UV Forge"} }
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><img src="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png" alt="UV Forge logo"> UV Forge Tools</a>
+    <nav class="nav-links"><a href="/">All Tools</a></nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:24px;padding-bottom:24px">
+  <h1 class="tool-title">Salary Slip Generator</h1>
+  <p class="tool-desc">Create a professional payslip with earnings and deductions — free instant PDF.</p>
+
+  <div class="card">
+    <div class="row row-2">
+      <div class="field"><label for="empName">Employee Name</label><input type="text" id="empName" placeholder="e.g. Priya Iyer"></div>
+      <div class="field"><label for="empDesignation">Designation</label><input type="text" id="empDesignation" placeholder="e.g. Software Engineer"></div>
+    </div>
+    <div class="row row-2">
+      <div class="field"><label for="empCompany">Company Name</label><input type="text" id="empCompany" placeholder="e.g. UV Forge Pvt Ltd"></div>
+      <div class="field"><label for="empMonth">Salary Month</label><input type="month" id="empMonth"></div>
+    </div>
+
+    <h3 style="margin:24px 0 8px">Earnings</h3>
+    <div class="row row-3">
+      <div class="field"><label for="basic">Basic (₹)</label><input type="number" id="basic" min="0" value="30000"></div>
+      <div class="field"><label for="hra">HRA (₹)</label><input type="number" id="hra" min="0" value="12000"></div>
+      <div class="field"><label for="allowances">Other Allowances (₹)</label><input type="number" id="allowances" min="0" value="5000"></div>
+    </div>
+
+    <h3 style="margin:24px 0 8px">Deductions</h3>
+    <div class="row row-3">
+      <div class="field"><label for="pf">PF (₹)</label><input type="number" id="pf" min="0" value="1800"></div>
+      <div class="field"><label for="pt">Professional Tax (₹)</label><input type="number" id="pt" min="0" value="200"></div>
+      <div class="field"><label for="tds">TDS (₹)</label><input type="number" id="tds" min="0" value="0"></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="generateSlip()">Generate Salary Slip</button>
+
+    <div class="result-panel" id="resultPanel">
+      <div class="result-grid section-gap">
+        <div class="stat"><div class="label">Gross Earnings</div><div class="value" id="rGross">₹0</div></div>
+        <div class="stat"><div class="label">Total Deductions</div><div class="value" id="rDeductions">₹0</div></div>
+        <div class="stat highlight"><div class="label">Net Pay</div><div class="value" id="rNet">₹0</div></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="downloadSlipPdf()">⬇ Download PDF Payslip</button>
+        <button class="btn btn-whatsapp" onclick="shareSlip()">Share on WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><button class="faq-q">What is included in a salary slip?</button><div class="faq-a">A salary slip lists earnings (basic pay, HRA, allowances) and deductions (PF, professional tax, TDS), showing the gross salary, total deductions and final net pay for a given month.</div></div>
+    <div class="faq-item"><button class="faq-q">Is this salary slip legally valid?</button><div class="faq-a">This is a free formatting tool to quickly create a payslip document. For official/statutory use, ensure it's issued or countersigned by your employer's HR/payroll department.</div></div>
+    <div class="faq-item"><button class="faq-q">What is Professional Tax (PT)?</button><div class="faq-a">Professional Tax is a small state-level tax deducted from salaried employees' pay in many Indian states, typically capped at ₹2,500 per year, and varies by state and income slab.</div></div>
+    <div class="faq-item"><button class="faq-q">Is my salary data stored anywhere?</button><div class="faq-a">No, all calculations and PDF generation happen entirely in your browser. Your salary details are never sent to or stored on any server.</div></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><a href="https://uvforge.in" target="_blank" rel="noopener">UV Forge</a> — Chennai's business automation agency.</p>
+    <p class="made-in-india">Made in India 🇮🇳</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="/assets/app.js"></script>
+<script src="/assets/pdf-utils.js"></script>
+<script src="/assets/share-utils.js"></script>
+<script>
+var lastSlip = null;
+var MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function monthLabel(val){
+  if(!val) return '-';
+  var parts = val.split('-');
+  return MONTH_NAMES[parseInt(parts[1],10)-1] + ' ' + parts[0];
+}
+
+function generateSlip(){
+  var basic = parseFloat(document.getElementById('basic').value) || 0;
+  var hra = parseFloat(document.getElementById('hra').value) || 0;
+  var allowances = parseFloat(document.getElementById('allowances').value) || 0;
+  var pf = parseFloat(document.getElementById('pf').value) || 0;
+  var pt = parseFloat(document.getElementById('pt').value) || 0;
+  var tds = parseFloat(document.getElementById('tds').value) || 0;
+
+  var gross = basic + hra + allowances;
+  var deductions = pf + pt + tds;
+  var net = gross - deductions;
+
+  lastSlip = {
+    name: document.getElementById('empName').value || '-',
+    designation: document.getElementById('empDesignation').value || '-',
+    company: document.getElementById('empCompany').value || '-',
+    month: monthLabel(document.getElementById('empMonth').value),
+    basic: basic, hra: hra, allowances: allowances, pf: pf, pt: pt, tds: tds,
+    gross: gross, deductions: deductions, net: net
+  };
+
+  document.getElementById('rGross').textContent = formatINR(gross);
+  document.getElementById('rDeductions').textContent = formatINR(deductions);
+  document.getElementById('rNet').textContent = formatINR(net);
+  document.getElementById('resultPanel').classList.add('show');
+}
+
+function shareSlip(){
+  if(!lastSlip) return;
+  waShare('Salary Slip Generator', lastSlip.name + '\'s net pay for ' + lastSlip.month + ' is ' + formatINR(lastSlip.net));
+}
+
+async function downloadSlipPdf(){
+  if(!lastSlip) return;
+  var s = lastSlip;
+  var ctx = await uvPdfCreate();
+  var layout = uvPdfAddPage(ctx);
+  var page = layout.page;
+  var y = layout.contentTop;
+
+  page.drawText('SALARY SLIP', { x: layout.margin, y: y, size: 20, font: ctx.fontBold });
+  y -= 20;
+  page.drawText(s.month, { x: layout.margin, y: y, size: 12, font: ctx.font, color: PDFLib.rgb(0.4,0.45,0.55) });
+  y -= 30;
+
+  [
+    'Employee Name: ' + s.name,
+    'Designation: ' + s.designation,
+    'Company: ' + s.company
+  ].forEach(function(l){ page.drawText(l, { x: layout.margin, y: y, size: 11, font: ctx.font }); y -= 16; });
+  y -= 16;
+
+  var columns = [
+    { header: 'Earnings', width: 240 },
+    { header: 'Amount', width: 108, align: 'right' },
+    { header: 'Deductions', width: 100 },
+    { header: 'Amount', width: 87, align: 'right' }
+  ];
+  var rows = [
+    ['Basic', formatINR(s.basic), 'PF', formatINR(s.pf)],
+    ['HRA', formatINR(s.hra), 'Professional Tax', formatINR(s.pt)],
+    ['Other Allowances', formatINR(s.allowances), 'TDS', formatINR(s.tds)],
+    ['Gross Earnings', formatINR(s.gross), 'Total Deductions', formatINR(s.deductions)]
+  ];
+  var pos = uvPdfDrawTable(ctx, layout, layout.margin, y, columns, rows);
+  y = pos.y - 24;
+  page = pos.page;
+
+  page.drawRectangle({ x: layout.margin, y: y - 30, width: layout.width - layout.margin*2, height: 34, color: PDFLib.rgb(0.145,0.388,0.922) });
+  page.drawText('NET PAY: ' + formatINR(s.net), { x: layout.margin + 12, y: y - 20, size: 14, font: ctx.fontBold, color: PDFLib.rgb(1,1,1) });
+
+  await uvPdfDownload(ctx, 'salary-slip-' + s.month.replace(' ','-') + '.pdf');
+}
+</script>
+</body>
+</html>

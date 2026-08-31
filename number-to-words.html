@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number to Words Converter — Indian Rupees in Words Free</title>
+<meta name="description" content="Free number to words converter using the Indian numbering system (lakhs, crores). Instantly convert any number into Rupees in words for cheques, invoices and legal documents.">
+<link rel="canonical" href="https://tools.uvforge.in/number-to-words.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Number to Words Converter — Indian Rupees in Words Free">
+<meta property="og:description" content="Convert any number to Indian Rupees in words instantly, free.">
+<meta property="og:url" content="https://tools.uvforge.in/number-to-words.html">
+<meta property="og:image" content="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">
+{ "@context":"https://schema.org","@type":"WebApplication","name":"Number to Words Converter","url":"https://tools.uvforge.in/number-to-words.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"publisher":{"@type":"Organization","name":"UV Forge"} }
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><img src="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png" alt="UV Forge logo"> UV Forge Tools</a>
+    <nav class="nav-links"><a href="/">All Tools</a></nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:24px;padding-bottom:24px">
+  <h1 class="tool-title">Number to Words Converter</h1>
+  <p class="tool-desc">Convert any number into Indian Rupees in words (lakhs, crores).</p>
+
+  <div class="card">
+    <div class="field">
+      <label for="numInput">Enter Number</label>
+      <input type="number" id="numInput" value="2342000" min="0" oninput="convertNumber()">
+      <p class="hint">Supports numbers up to 999,99,99,999 (Indian numbering system).</p>
+    </div>
+    <div class="result-panel show" id="resultPanel">
+      <div class="stat highlight" style="text-align:left;padding:20px">
+        <div class="label">In Words</div>
+        <div class="value" id="rWords" style="font-size:18px;line-height:1.5">Rupees Twenty Three Lakh Forty Two Thousand Only</div>
+      </div>
+      <button class="btn btn-outline section-gap" onclick="copyWords()">📋 Copy</button>
+      <div style="text-align:center;margin-top:10px"><span class="copy-badge" id="numBadge">✓ Copied to clipboard!</span></div>
+    </div>
+  </div>
+
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><button class="faq-q">What numbering system does this use?</button><div class="faq-a">This converter uses the Indian numbering system — Thousand, Lakh and Crore — which is standard for Indian cheques, invoices and legal documents, rather than the international Million/Billion system.</div></div>
+    <div class="faq-item"><button class="faq-q">What is the largest number I can convert?</button><div class="faq-a">This tool supports numbers up to 999,99,99,999 (999 crore 99 lakh 99 thousand 999), which covers virtually all cheque and invoice amounts.</div></div>
+    <div class="faq-item"><button class="faq-q">Does it handle decimal amounts like paise?</button><div class="faq-a">This tool converts the whole rupee amount to words. For cheque writing, decimal/paise values are conventionally dropped or written separately as "and XX paise".</div></div>
+    <div class="faq-item"><button class="faq-q">Can I use this for writing cheques?</button><div class="faq-a">Yes, the output format ("Rupees ... Only") matches the standard format used when writing amounts in words on Indian bank cheques.</div></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><a href="https://uvforge.in" target="_blank" rel="noopener">UV Forge</a> — Chennai's business automation agency.</p>
+    <p class="made-in-india">Made in India 🇮🇳</p>
+  </div>
+</footer>
+
+<script src="/assets/app.js"></script>
+<script>
+function convertNumber(){
+  var n = parseFloat(document.getElementById('numInput').value);
+  if(isNaN(n) || n < 0){
+    document.getElementById('rWords').textContent = 'Please enter a valid positive number';
+    return;
+  }
+  if(n > 99999999999){
+    document.getElementById('rWords').textContent = 'Number too large — please enter a value up to 999,99,99,999';
+    return;
+  }
+  document.getElementById('rWords').textContent = 'Rupees ' + numberToIndianWords(n) + ' Only';
+}
+
+function copyWords(){
+  copyToClipboard(document.getElementById('rWords').textContent, document.getElementById('numBadge'));
+}
+
+convertNumber();
+</script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free GST Invoice Generator — Download PDF Instantly</title>
+<meta name="description" content="Free GST invoice generator for Indian businesses. Add seller & buyer details, line items with per-item GST rate, upload your logo, and download a GST-compliant invoice PDF instantly.">
+<link rel="canonical" href="https://tools.uvforge.in/gst-invoice.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free GST Invoice Generator — Download PDF Instantly">
+<meta property="og:description" content="Create and download a GST-compliant invoice PDF instantly, free.">
+<meta property="og:url" content="https://tools.uvforge.in/gst-invoice.html">
+<meta property="og:image" content="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">
+{ "@context":"https://schema.org","@type":"WebApplication","name":"GST Invoice Generator","url":"https://tools.uvforge.in/gst-invoice.html","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"publisher":{"@type":"Organization","name":"UV Forge"} }
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><img src="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png" alt="UV Forge logo"> UV Forge Tools</a>
+    <nav class="nav-links"><a href="/">All Tools</a></nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:24px;padding-bottom:24px">
+  <h1 class="tool-title">GST Invoice Generator</h1>
+  <p class="tool-desc">Create a professional GST invoice with line items and download the PDF — free.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">Your Business (Seller)</h3>
+    <div class="row row-2">
+      <div class="field"><label for="sellerName">Business Name</label><input type="text" id="sellerName" placeholder="e.g. UV Forge Technologies"></div>
+      <div class="field"><label for="sellerGstin">GSTIN</label><input type="text" id="sellerGstin" placeholder="33ABCDE1234F1Z5"></div>
+    </div>
+    <div class="row row-2">
+      <div class="field"><label for="sellerAddress">Address</label><textarea id="sellerAddress" rows="2" placeholder="Street, City, PIN"></textarea></div>
+      <div class="field">
+        <label for="sellerState">State</label>
+        <input type="text" id="sellerState" placeholder="e.g. Tamil Nadu">
+        <label style="margin-top:10px" for="logoUpload">Logo (optional)</label>
+        <input type="file" id="logoUpload" accept="image/png,image/jpeg">
+      </div>
+    </div>
+
+    <h3>Buyer</h3>
+    <div class="row row-2">
+      <div class="field"><label for="buyerName">Buyer Name</label><input type="text" id="buyerName" placeholder="e.g. Ramesh Traders"></div>
+      <div class="field"><label for="buyerGstin">GSTIN (optional)</label><input type="text" id="buyerGstin" placeholder="29XXXXX0000X1Z1"></div>
+    </div>
+    <div class="row row-2">
+      <div class="field"><label for="buyerAddress">Address</label><textarea id="buyerAddress" rows="2" placeholder="Street, City, PIN"></textarea></div>
+      <div class="field"><label for="buyerState">State</label><input type="text" id="buyerState" placeholder="e.g. Karnataka"></div>
+    </div>
+
+    <div class="row row-3">
+      <div class="field"><label for="invoiceNo">Invoice Number</label><input type="text" id="invoiceNo" placeholder="INV-001"></div>
+      <div class="field"><label for="invoiceDate">Invoice Date</label><input type="date" id="invoiceDate"></div>
+      <div class="field">
+        <label for="supplyType">Supply Type</label>
+        <select id="supplyType">
+          <option value="intra">Intra-state (CGST + SGST)</option>
+          <option value="inter">Inter-state (IGST)</option>
+        </select>
+      </div>
+    </div>
+
+    <h3>Line Items</h3>
+    <div id="itemsContainer"></div>
+    <button class="link-btn" onclick="addItem()">+ Add Line Item</button>
+
+    <div class="btn-row section-gap">
+      <button class="btn btn-primary" onclick="generateInvoice()">Generate Invoice</button>
+    </div>
+
+    <div class="result-panel" id="resultPanel">
+      <div class="card section-gap" id="invoicePreview" style="border:1px solid var(--border)"></div>
+      <div class="btn-row section-gap">
+        <button class="btn btn-outline" onclick="downloadInvoicePdf()">⬇ Download PDF Invoice</button>
+        <button class="btn btn-whatsapp" onclick="shareInvoice()">Share on WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><button class="faq-q">What is the difference between CGST+SGST and IGST?</button><div class="faq-a">CGST + SGST apply when the seller and buyer are in the same state (intra-state supply), split equally. IGST applies when they're in different states (inter-state supply). Select the correct supply type before generating your invoice.</div></div>
+    <div class="faq-item"><button class="faq-q">Can I set a different GST rate for each item?</button><div class="faq-a">Yes, each line item has its own GST rate dropdown (0%, 5%, 12%, 18%, 28%) so you can invoice items taxed at different rates in the same invoice.</div></div>
+    <div class="faq-item"><button class="faq-q">Is this invoice GST-compliant?</button><div class="faq-a">This generator includes the standard fields required on a GST invoice — GSTIN, invoice number, date, HSN-ready line items, and CGST/SGST/IGST breakup. Always verify against current GST rules for your specific business.</div></div>
+    <div class="faq-item"><button class="faq-q">Is my invoice data uploaded anywhere?</button><div class="faq-a">No, the entire invoice — including any logo you upload — is generated and processed locally in your browser. Nothing is sent to or stored on any server.</div></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><a href="https://uvforge.in" target="_blank" rel="noopener">UV Forge</a> — Chennai's business automation agency.</p>
+    <p class="made-in-india">Made in India 🇮🇳</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="/assets/app.js"></script>
+<script src="/assets/pdf-utils.js"></script>
+<script src="/assets/share-utils.js"></script>
+<script>
+var items = [];
+var itemIdSeq = 0;
+var logoDataUrl = null;
+var logoBytes = null;
+var logoType = null;
+var lastInvoice = null;
+
+function addItem(){
+  var id = itemIdSeq++;
+  items.push({ id: id, desc: '', qty: 1, rate: 0, gst: 18 });
+  renderItems();
+}
+
+function removeItem(id){
+  items = items.filter(function(i){ return i.id !== id; });
+  renderItems();
+}
+
+function updateItem(id, field, value){
+  var item = items.find(function(i){ return i.id === id; });
+  if(!item) return;
+  item[field] = (field === 'desc') ? value : parseFloat(value) || 0;
+}
+
+function renderItems(){
+  var container = document.getElementById('itemsContainer');
+  container.innerHTML = '';
+  items.forEach(function(item){
+    var row = document.createElement('div');
+    row.className = 'gst-item-row';
+    row.innerHTML =
+      '<div class="field" style="margin:0"><label>Description</label><input type="text" value="' + item.desc + '" oninput="updateItem(' + item.id + ',\'desc\',this.value)"></div>' +
+      '<div class="field" style="margin:0"><label>Qty</label><input type="number" min="0" value="' + item.qty + '" oninput="updateItem(' + item.id + ',\'qty\',this.value)"></div>' +
+      '<div class="field" style="margin:0"><label>Rate (₹)</label><input type="number" min="0" value="' + item.rate + '" oninput="updateItem(' + item.id + ',\'rate\',this.value)"></div>' +
+      '<div class="field" style="margin:0"><label>GST %</label><select onchange="updateItem(' + item.id + ',\'gst\',this.value)">' +
+        [0,5,12,18,28].map(function(r){ return '<option value="' + r + '"' + (r===item.gst?' selected':'') + '>' + r + '%</option>'; }).join('') +
+      '</select></div>' +
+      '<button class="remove-row" onclick="removeItem(' + item.id + ')" title="Remove item">✕</button>';
+    container.appendChild(row);
+  });
+}
+
+document.getElementById('logoUpload').addEventListener('change', function(e){
+  var file = e.target.files[0];
+  if(!file) return;
+  logoType = file.type;
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    logoDataUrl = ev.target.result;
+    logoBytes = ev.target.result.split(',')[1];
+  };
+  reader.readAsDataURL(file);
+});
+
+function computeInvoice(){
+  var supplyType = document.getElementById('supplyType').value;
+  var subtotal = 0, totalGst = 0;
+  var lines = items.map(function(item){
+    var amount = item.qty * item.rate;
+    var gstAmt = amount * item.gst / 100;
+    subtotal += amount;
+    totalGst += gstAmt;
+    return { desc: item.desc || 'Item', qty: item.qty, rate: item.rate, gst: item.gst, amount: amount, gstAmt: gstAmt };
+  });
+  return {
+    seller: {
+      name: document.getElementById('sellerName').value || '-',
+      gstin: document.getElementById('sellerGstin').value || '-',
+      address: document.getElementById('sellerAddress').value || '-',
+      state: document.getElementById('sellerState').value || '-'
+    },
+    buyer: {
+      name: document.getElementById('buyerName').value || '-',
+      gstin: document.getElementById('buyerGstin').value || '-',
+      address: document.getElementById('buyerAddress').value || '-',
+      state: document.getElementById('buyerState').value || '-'
+    },
+    invoiceNo: document.getElementById('invoiceNo').value || '-',
+    invoiceDate: document.getElementById('invoiceDate').value || '-',
+    supplyType: supplyType,
+    lines: lines,
+    subtotal: subtotal,
+    totalGst: totalGst,
+    grandTotal: subtotal + totalGst
+  };
+}
+
+function generateInvoice(){
+  var inv = computeInvoice();
+  lastInvoice = inv;
+
+  var gstLabel = inv.supplyType === 'intra' ? 'CGST (' + '½' + ') + SGST' : 'IGST';
+  var rowsHtml = inv.lines.map(function(l){
+    return '<tr><td>' + l.desc + '</td><td>' + l.qty + '</td><td>' + formatINR(l.rate) + '</td><td>' + l.gst + '%</td><td>' + formatINR(l.amount + l.gstAmt) + '</td></tr>';
+  }).join('');
+
+  document.getElementById('invoicePreview').innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px">' +
+      (logoDataUrl ? '<img src="' + logoDataUrl + '" style="max-height:50px">' : '<h3 style="margin:0">' + inv.seller.name + '</h3>') +
+      '<div style="text-align:right"><strong>Invoice #' + inv.invoiceNo + '</strong><br><span style="color:var(--text-muted);font-size:13px">' + inv.invoiceDate + '</span></div>' +
+    '</div>' +
+    '<div class="row row-2 section-gap">' +
+      '<div><strong>Seller</strong><br>' + inv.seller.name + '<br>' + inv.seller.address + '<br>GSTIN: ' + inv.seller.gstin + ' · ' + inv.seller.state + '</div>' +
+      '<div><strong>Buyer</strong><br>' + inv.buyer.name + '<br>' + inv.buyer.address + '<br>GSTIN: ' + inv.buyer.gstin + ' · ' + inv.buyer.state + '</div>' +
+    '</div>' +
+    '<div class="table-wrap section-gap"><table><thead><tr><th>Item</th><th>Qty</th><th>Rate</th><th>GST</th><th>Amount</th></tr></thead><tbody>' + rowsHtml + '</tbody></table></div>' +
+    '<div style="text-align:right;margin-top:16px">' +
+      '<div>Subtotal: ' + formatINR(inv.subtotal) + '</div>' +
+      '<div>' + gstLabel + ': ' + formatINR(inv.totalGst) + '</div>' +
+      '<div style="font-size:20px;font-weight:800;color:var(--blue);margin-top:6px">Grand Total: ' + formatINR(inv.grandTotal) + '</div>' +
+    '</div>';
+
+  document.getElementById('resultPanel').classList.add('show');
+}
+
+function shareInvoice(){
+  if(!lastInvoice) return;
+  waShare('GST Invoice Generator', 'Invoice #' + lastInvoice.invoiceNo + ' — Grand Total ' + formatINR(lastInvoice.grandTotal));
+}
+
+async function downloadInvoicePdf(){
+  if(!lastInvoice) return;
+  var inv = lastInvoice;
+  var ctx = await uvPdfCreate();
+  var layout = uvPdfAddPage(ctx);
+  var page = layout.page;
+  var y = layout.contentTop;
+
+  if(logoBytes){
+    try{
+      var img = logoType === 'image/png' ? await ctx.doc.embedPng(logoBytes) : await ctx.doc.embedJpg(logoBytes);
+      var dims = img.scaleToFit(90, 40);
+      page.drawImage(img, { x: layout.margin, y: y - dims.height + 10, width: dims.width, height: dims.height });
+    }catch(e){}
+  }
+
+  page.drawText('TAX INVOICE', { x: layout.width - layout.margin - 130, y: y, size: 16, font: ctx.fontBold });
+  page.drawText('Invoice #' + inv.invoiceNo, { x: layout.width - layout.margin - 130, y: y - 18, size: 10, font: ctx.font });
+  page.drawText('Date: ' + inv.invoiceDate, { x: layout.width - layout.margin - 130, y: y - 32, size: 10, font: ctx.font });
+  y -= 60;
+
+  var colW = (layout.width - layout.margin*2 - 20) / 2;
+  page.drawText('Seller', { x: layout.margin, y: y, size: 11, font: ctx.fontBold });
+  page.drawText('Buyer', { x: layout.margin + colW + 20, y: y, size: 11, font: ctx.fontBold });
+  y -= 16;
+  [inv.seller.name, inv.seller.address, 'GSTIN: ' + inv.seller.gstin, 'State: ' + inv.seller.state].forEach(function(l, i){
+    page.drawText(l, { x: layout.margin, y: y - i*14, size: 9.5, font: ctx.font, maxWidth: colW });
+  });
+  [inv.buyer.name, inv.buyer.address, 'GSTIN: ' + inv.buyer.gstin, 'State: ' + inv.buyer.state].forEach(function(l, i){
+    page.drawText(l, { x: layout.margin + colW + 20, y: y - i*14, size: 9.5, font: ctx.font, maxWidth: colW });
+  });
+  y -= 4*14 + 16;
+
+  var columns = [
+    { header: 'Item', width: 210 },
+    { header: 'Qty', width: 50, align: 'right' },
+    { header: 'Rate', width: 90, align: 'right' },
+    { header: 'GST', width: 50, align: 'right' },
+    { header: 'Amount', width: 115, align: 'right' }
+  ];
+  var rows = inv.lines.map(function(l){
+    return [l.desc, l.qty, formatINR(l.rate), l.gst + '%', formatINR(l.amount + l.gstAmt)];
+  });
+  var pos = uvPdfDrawTable(ctx, layout, layout.margin, y, columns, rows);
+  page = pos.page;
+  y = pos.y - 16;
+
+  var gstLabel = inv.supplyType === 'intra' ? 'CGST + SGST' : 'IGST';
+  var totalsX = layout.width - layout.margin - 200;
+  [
+    ['Subtotal', formatINR(inv.subtotal)],
+    [gstLabel, formatINR(inv.totalGst)]
+  ].forEach(function(row){
+    page.drawText(row[0], { x: totalsX, y: y, size: 10, font: ctx.font });
+    page.drawText(row[1], { x: layout.width - layout.margin - ctx.font.widthOfTextAtSize(row[1],10), y: y, size: 10, font: ctx.font });
+    y -= 16;
+  });
+  page.drawText('Grand Total', { x: totalsX, y: y - 6, size: 13, font: ctx.fontBold });
+  var gtText = formatINR(inv.grandTotal);
+  page.drawText(gtText, { x: layout.width - layout.margin - ctx.fontBold.widthOfTextAtSize(gtText,13), y: y - 6, size: 13, font: ctx.fontBold, color: PDFLib.rgb(0.145,0.388,0.922) });
+
+  await uvPdfDownload(ctx, 'gst-invoice-' + inv.invoiceNo + '.pdf');
+}
+
+addItem();
+document.getElementById('invoiceDate').valueAsDate = new Date();
+</script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HRA Exemption Calculator — Free HRA Calculator India 2026</title>
+<meta name="description" content="Free HRA exemption calculator for salaried employees in India. Calculate tax-exempt HRA and taxable HRA as per Income Tax Act rules, for metro and non-metro cities.">
+<link rel="canonical" href="https://tools.uvforge.in/hra-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HRA Exemption Calculator — Free HRA Calculator India 2026">
+<meta property="og:description" content="Calculate your tax-exempt HRA amount instantly, free.">
+<meta property="og:url" content="https://tools.uvforge.in/hra-calculator.html">
+<meta property="og:image" content="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">
+{ "@context":"https://schema.org","@type":"WebApplication","name":"HRA Exemption Calculator","url":"https://tools.uvforge.in/hra-calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"publisher":{"@type":"Organization","name":"UV Forge"} }
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><img src="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png" alt="UV Forge logo"> UV Forge Tools</a>
+    <nav class="nav-links"><a href="/">All Tools</a></nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:24px;padding-bottom:24px">
+  <h1 class="tool-title">HRA Exemption Calculator</h1>
+  <p class="tool-desc">Calculate your tax-exempt House Rent Allowance as per Income Tax rules.</p>
+
+  <div class="card">
+    <div class="row row-2">
+      <div class="field"><label for="basic">Basic Salary (₹ / year)</label><input type="number" id="basic" value="600000" min="0"></div>
+      <div class="field"><label for="hraReceived">HRA Received (₹ / year)</label><input type="number" id="hraReceived" value="240000" min="0"></div>
+    </div>
+    <div class="row row-2">
+      <div class="field"><label for="rentPaid">Rent Paid (₹ / year)</label><input type="number" id="rentPaid" value="300000" min="0"></div>
+      <div class="field">
+        <label>City Type</label>
+        <div class="toggle-group" id="cityType" style="width:100%">
+          <button data-value="metro" class="active" style="flex:1">Metro</button>
+          <button data-value="nonmetro" style="flex:1">Non-Metro</button>
+        </div>
+      </div>
+    </div>
+    <p class="hint" style="margin:-8px 0 16px">Metro = Delhi, Mumbai, Kolkata, Chennai. All other cities are Non-Metro.</p>
+    <button class="btn btn-primary" onclick="calculateHRA()">Calculate HRA Exemption</button>
+
+    <div class="result-panel" id="resultPanel">
+      <div class="result-grid section-gap">
+        <div class="stat highlight"><div class="label">HRA Exemption</div><div class="value" id="rExempt">₹0</div></div>
+        <div class="stat"><div class="label">Taxable HRA</div><div class="value" id="rTaxable">₹0</div></div>
+      </div>
+      <div class="table-wrap section-gap">
+        <table>
+          <thead><tr><th>Calculation Basis</th><th>Amount</th></tr></thead>
+          <tbody id="hraBody"></tbody>
+        </table>
+      </div>
+      <div class="btn-row section-gap">
+        <button class="btn btn-outline" onclick="downloadHraPdf()">⬇ Download PDF Summary</button>
+        <button class="btn btn-whatsapp" onclick="shareHra()">Share on WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><button class="faq-q">How is HRA exemption calculated?</button><div class="faq-a">HRA exemption is the minimum of: (1) actual HRA received, (2) rent paid minus 10% of basic salary, and (3) 50% of basic salary for metro cities or 40% for non-metro cities.</div></div>
+    <div class="faq-item"><button class="faq-q">Which cities count as metro for HRA purposes?</button><div class="faq-a">For HRA exemption, Delhi, Mumbai, Kolkata and Chennai are classified as metro cities (50% of basic). All other Indian cities are non-metro (40% of basic).</div></div>
+    <div class="faq-item"><button class="faq-q">Can I claim HRA exemption under the new tax regime?</button><div class="faq-a">No, HRA exemption under Section 10(13A) is available only under the old tax regime. Under the new tax regime, this exemption cannot be claimed.</div></div>
+    <div class="faq-item"><button class="faq-q">Do I need rent receipts to claim HRA exemption?</button><div class="faq-a">Yes, you typically need rent receipts (and a PAN of the landlord if annual rent exceeds ₹1,00,000) as proof to claim HRA exemption with your employer or while filing income tax returns.</div></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><a href="https://uvforge.in" target="_blank" rel="noopener">UV Forge</a> — Chennai's business automation agency.</p>
+    <p class="made-in-india">Made in India 🇮🇳</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="/assets/app.js"></script>
+<script src="/assets/pdf-utils.js"></script>
+<script src="/assets/share-utils.js"></script>
+<script>
+var cityType = 'metro';
+initToggleGroup(document.getElementById('cityType'), function(v){ cityType = v; });
+var lastResult = null;
+
+function calculateHRA(){
+  var basic = parseFloat(document.getElementById('basic').value) || 0;
+  var hraReceived = parseFloat(document.getElementById('hraReceived').value) || 0;
+  var rentPaid = parseFloat(document.getElementById('rentPaid').value) || 0;
+
+  var basisPct = cityType === 'metro' ? 0.5 : 0.4;
+  var byActual = hraReceived;
+  var byRent = Math.max(0, rentPaid - 0.10 * basic);
+  var byBasic = basisPct * basic;
+
+  var exemption = Math.min(byActual, byRent, byBasic);
+  var taxable = Math.max(0, hraReceived - exemption);
+
+  lastResult = { basic: basic, hraReceived: hraReceived, rentPaid: rentPaid, cityType: cityType, byActual: byActual, byRent: byRent, byBasic: byBasic, exemption: exemption, taxable: taxable };
+
+  document.getElementById('rExempt').textContent = formatINR(exemption);
+  document.getElementById('rTaxable').textContent = formatINR(taxable);
+
+  document.getElementById('hraBody').innerHTML =
+    '<tr><td>Actual HRA received</td><td>' + formatINR(byActual) + '</td></tr>' +
+    '<tr><td>Rent paid − 10% of basic</td><td>' + formatINR(byRent) + '</td></tr>' +
+    '<tr><td>' + (basisPct*100) + '% of basic salary (' + (cityType==='metro'?'Metro':'Non-Metro') + ')</td><td>' + formatINR(byBasic) + '</td></tr>';
+
+  document.getElementById('resultPanel').classList.add('show');
+}
+
+function shareHra(){
+  if(!lastResult) return;
+  waShare('HRA Exemption Calculator', 'My HRA exemption is ' + formatINR(lastResult.exemption) + ' (taxable HRA: ' + formatINR(lastResult.taxable) + ')');
+}
+
+async function downloadHraPdf(){
+  if(!lastResult) return;
+  var ctx = await uvPdfCreate();
+  var layout = uvPdfAddPage(ctx);
+  var page = layout.page;
+  var y = layout.contentTop;
+  page.drawText('HRA Exemption Summary', { x: layout.margin, y: y, size: 18, font: ctx.fontBold });
+  y -= 26;
+  var lines = [
+    'Basic Salary: ' + formatINR(lastResult.basic) + ' / year',
+    'HRA Received: ' + formatINR(lastResult.hraReceived) + ' / year',
+    'Rent Paid: ' + formatINR(lastResult.rentPaid) + ' / year',
+    'City Type: ' + (lastResult.cityType === 'metro' ? 'Metro' : 'Non-Metro'),
+    '',
+    'Actual HRA received: ' + formatINR(lastResult.byActual),
+    'Rent paid - 10% of basic: ' + formatINR(lastResult.byRent),
+    (lastResult.cityType==='metro'?'50':'40') + '% of basic salary: ' + formatINR(lastResult.byBasic),
+    '',
+    'HRA Exemption: ' + formatINR(lastResult.exemption),
+    'Taxable HRA: ' + formatINR(lastResult.taxable)
+  ];
+  lines.forEach(function(l){ page.drawText(l, { x: layout.margin, y: y, size: 11, font: ctx.font }); y -= 16; });
+  await uvPdfDownload(ctx, 'hra-summary.pdf');
+}
+</script>
+</body>
+</html>

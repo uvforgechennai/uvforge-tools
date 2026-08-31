@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Rent Receipt Generator — Download PDF India 2026</title>
+<meta name="description" content="Free rent receipt generator for HRA tax exemption claims. Enter tenant, landlord and payment details and download a professional rent receipt PDF instantly.">
+<link rel="canonical" href="https://tools.uvforge.in/rent-receipt.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free Rent Receipt Generator — Download PDF India 2026">
+<meta property="og:description" content="Generate a professional rent receipt PDF for HRA claims, free.">
+<meta property="og:url" content="https://tools.uvforge.in/rent-receipt.html">
+<meta property="og:image" content="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">
+{ "@context":"https://schema.org","@type":"WebApplication","name":"Rent Receipt Generator","url":"https://tools.uvforge.in/rent-receipt.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"publisher":{"@type":"Organization","name":"UV Forge"} }
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><img src="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png" alt="UV Forge logo"> UV Forge Tools</a>
+    <nav class="nav-links"><a href="/">All Tools</a></nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:24px;padding-bottom:24px">
+  <h1 class="tool-title">Rent Receipt Generator</h1>
+  <p class="tool-desc">Create a rent receipt for HRA exemption claims — free, instant PDF download.</p>
+
+  <div class="card">
+    <div class="row row-2">
+      <div class="field"><label for="tenantName">Tenant Name</label><input type="text" id="tenantName" placeholder="e.g. Rahul Sharma"></div>
+      <div class="field"><label for="landlordName">Landlord Name</label><input type="text" id="landlordName" placeholder="e.g. Suresh Kumar"></div>
+    </div>
+    <div class="field"><label for="propertyAddress">Rented Property Address</label><textarea id="propertyAddress" rows="2" placeholder="Flat No, Street, City, PIN"></textarea></div>
+    <div class="row row-3">
+      <div class="field"><label for="rentAmount">Rent Amount (₹)</label><input type="number" id="rentAmount" min="0" placeholder="15000"></div>
+      <div class="field"><label for="rentMonth">For the Month</label><input type="month" id="rentMonth"></div>
+      <div class="field">
+        <label for="paymentMode">Payment Mode</label>
+        <select id="paymentMode">
+          <option>Cash</option>
+          <option>Bank Transfer / NEFT</option>
+          <option>UPI</option>
+          <option>Cheque</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="generateReceipt()">Generate Receipt</button>
+
+    <div class="result-panel" id="resultPanel">
+      <div class="card section-gap" style="background:var(--blue-light);border:1px solid var(--border)">
+        <h3 style="margin-top:0">Rent Receipt Preview</h3>
+        <p id="previewText" style="white-space:pre-line;font-size:14px;line-height:1.8"></p>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="downloadReceiptPdf()">⬇ Download PDF Receipt</button>
+        <button class="btn btn-whatsapp" onclick="shareReceipt()">Share on WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><button class="faq-q">Why do I need a rent receipt?</button><div class="faq-a">Rent receipts are required as proof of rent payment when claiming HRA (House Rent Allowance) tax exemption from your employer or while filing income tax returns.</div></div>
+    <div class="faq-item"><button class="faq-q">Do I need one receipt per month?</button><div class="faq-a">Most employers require a separate rent receipt for each month, or a quarterly consolidated set. Generate one here for each month and keep copies for your records.</div></div>
+    <div class="faq-item"><button class="faq-q">Is a revenue stamp required on rent receipts?</button><div class="faq-a">As per Indian rules, a revenue stamp is typically required on cash rent receipts where the amount exceeds ₹5,000. For non-cash payments (bank transfer, UPI, cheque), a revenue stamp is generally not required.</div></div>
+    <div class="faq-item"><button class="faq-q">Is my data saved anywhere?</button><div class="faq-a">No, everything is generated locally in your browser. Your name, address and rent details are never uploaded or stored on any server.</div></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><a href="https://uvforge.in" target="_blank" rel="noopener">UV Forge</a> — Chennai's business automation agency.</p>
+    <p class="made-in-india">Made in India 🇮🇳</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="/assets/app.js"></script>
+<script src="/assets/pdf-utils.js"></script>
+<script src="/assets/share-utils.js"></script>
+<script>
+var lastReceipt = null;
+var MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function monthLabel(val){
+  if(!val) return '-';
+  var parts = val.split('-');
+  return MONTH_NAMES[parseInt(parts[1],10)-1] + ' ' + parts[0];
+}
+
+function generateReceipt(){
+  var data = {
+    tenant: document.getElementById('tenantName').value || '-',
+    landlord: document.getElementById('landlordName').value || '-',
+    address: document.getElementById('propertyAddress').value || '-',
+    amount: parseFloat(document.getElementById('rentAmount').value) || 0,
+    month: monthLabel(document.getElementById('rentMonth').value),
+    mode: document.getElementById('paymentMode').value
+  };
+  lastReceipt = data;
+
+  document.getElementById('previewText').textContent =
+    'RENT RECEIPT\n\n' +
+    'Received with thanks from ' + data.tenant + ',\n' +
+    'a sum of ' + formatINR(data.amount) + ' towards rent for the month of ' + data.month + ',\n' +
+    'for the premises located at: ' + data.address + '.\n\n' +
+    'Payment Mode: ' + data.mode + '\n' +
+    'Landlord: ' + data.landlord;
+
+  document.getElementById('resultPanel').classList.add('show');
+}
+
+function shareReceipt(){
+  if(!lastReceipt) return;
+  waShare('Rent Receipt Generator', 'Rent receipt for ' + lastReceipt.month + ' — ' + formatINR(lastReceipt.amount));
+}
+
+async function downloadReceiptPdf(){
+  if(!lastReceipt) return;
+  var ctx = await uvPdfCreate();
+  var layout = uvPdfAddPage(ctx);
+  var page = layout.page;
+  var y = layout.contentTop;
+
+  page.drawText('RENT RECEIPT', { x: layout.margin, y: y, size: 20, font: ctx.fontBold });
+  y -= 34;
+
+  var lines = [
+    'Received with thanks from: ' + lastReceipt.tenant,
+    'A sum of: ' + formatINR(lastReceipt.amount),
+    'Towards rent for the month of: ' + lastReceipt.month,
+    '',
+    'Property Address:',
+    lastReceipt.address,
+    '',
+    'Payment Mode: ' + lastReceipt.mode,
+    'Landlord Name: ' + lastReceipt.landlord
+  ];
+  lines.forEach(function(l){
+    page.drawText(l, { x: layout.margin, y: y, size: 12, font: ctx.font, maxWidth: layout.width - layout.margin*2 });
+    y -= 20;
+  });
+
+  y -= 40;
+  page.drawLine({ start: { x: layout.margin, y: y }, end: { x: layout.margin + 180, y: y }, thickness: 1, color: PDFLib.rgb(0.7,0.7,0.7) });
+  page.drawText('Landlord Signature', { x: layout.margin, y: y - 14, size: 10, font: ctx.font, color: PDFLib.rgb(0.4,0.45,0.55) });
+
+  await uvPdfDownload(ctx, 'rent-receipt.pdf');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIP Calculator — Free SIP Returns Calculator India</title>
+<meta name="description" content="Free SIP calculator to estimate your mutual fund SIP returns. See invested amount, estimated returns and total value with a year-wise breakdown, plus downloadable PDF summary.">
+<link rel="canonical" href="https://tools.uvforge.in/sip-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SIP Calculator — Free SIP Returns Calculator India">
+<meta property="og:description" content="Estimate your mutual fund SIP returns year by year, free.">
+<meta property="og:url" content="https://tools.uvforge.in/sip-calculator.html">
+<meta property="og:image" content="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">
+{ "@context":"https://schema.org","@type":"WebApplication","name":"SIP Calculator","url":"https://tools.uvforge.in/sip-calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"publisher":{"@type":"Organization","name":"UV Forge"} }
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><img src="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png" alt="UV Forge logo"> UV Forge Tools</a>
+    <nav class="nav-links"><a href="/">All Tools</a></nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:24px;padding-bottom:24px">
+  <h1 class="tool-title">SIP Returns Calculator</h1>
+  <p class="tool-desc">Estimate the future value of your monthly SIP investment.</p>
+
+  <div class="card">
+    <div class="row row-3">
+      <div class="field"><label for="sipAmount">Monthly SIP (₹)</label><input type="number" id="sipAmount" value="5000" min="0"></div>
+      <div class="field"><label for="sipReturn">Expected Return (% p.a.)</label><input type="number" id="sipReturn" value="12" min="0" step="0.1"></div>
+      <div class="field"><label for="sipYears">Time Period (years)</label><input type="number" id="sipYears" value="10" min="1"></div>
+    </div>
+    <button class="btn btn-primary" onclick="calculateSIP()">Calculate Returns</button>
+
+    <div class="result-panel" id="resultPanel">
+      <div class="result-grid section-gap">
+        <div class="stat"><div class="label">Invested Amount</div><div class="value" id="rInvested">₹0</div></div>
+        <div class="stat"><div class="label">Estimated Returns</div><div class="value" id="rReturns">₹0</div></div>
+        <div class="stat highlight"><div class="label">Total Value</div><div class="value" id="rTotal">₹0</div></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="downloadSipPdf()">⬇ Download PDF Summary</button>
+        <button class="btn btn-whatsapp" onclick="shareSip()">Share on WhatsApp</button>
+      </div>
+      <div class="section-gap">
+        <h3 style="margin-bottom:12px">Year-wise Breakdown</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Year</th><th>Invested</th><th>Value</th></tr></thead>
+            <tbody id="sipBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><button class="faq-q">How does the SIP calculator work?</button><div class="faq-a">It uses the standard SIP future value formula assuming your monthly investment grows at a compounded expected annual return rate, compounded monthly, for the number of years you enter.</div></div>
+    <div class="faq-item"><button class="faq-q">Is the SIP return rate guaranteed?</button><div class="faq-a">No. The return rate you enter is an assumption for estimation only. Actual mutual fund returns depend on market performance and are never guaranteed.</div></div>
+    <div class="faq-item"><button class="faq-q">What is a good expected return rate to use?</button><div class="faq-a">Equity mutual funds in India have historically averaged 10-14% p.a. over long periods, though this varies by fund and market cycle. Use a conservative estimate for planning.</div></div>
+    <div class="faq-item"><button class="faq-q">Can I download the year-wise SIP breakdown?</button><div class="faq-a">Yes, click "Download PDF Summary" to get a year-wise invested-vs-value table as a PDF, generated in your browser.</div></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><a href="https://uvforge.in" target="_blank" rel="noopener">UV Forge</a> — Chennai's business automation agency.</p>
+    <p class="made-in-india">Made in India 🇮🇳</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="/assets/app.js"></script>
+<script src="/assets/pdf-utils.js"></script>
+<script src="/assets/share-utils.js"></script>
+<script>
+var lastResult = null;
+
+function computeSip(monthly, annualRate, years){
+  var r = annualRate / 12 / 100;
+  var months = years * 12;
+  var yearRows = [];
+  var value = 0, invested = 0;
+  for(var m = 1; m <= months; m++){
+    value = (value + monthly) * (1 + r);
+    invested += monthly;
+    if(m % 12 === 0){
+      yearRows.push({ year: m / 12, invested: invested, value: value });
+    }
+  }
+  return { invested: invested, value: value, returns: value - invested, yearRows: yearRows };
+}
+
+function calculateSIP(){
+  var monthly = parseFloat(document.getElementById('sipAmount').value) || 0;
+  var rate = parseFloat(document.getElementById('sipReturn').value) || 0;
+  var years = parseInt(document.getElementById('sipYears').value) || 0;
+  if(monthly <= 0 || years <= 0) return;
+
+  var result = computeSip(monthly, rate, years);
+  lastResult = { monthly: monthly, rate: rate, years: years, result: result };
+
+  document.getElementById('rInvested').textContent = formatINR(result.invested);
+  document.getElementById('rReturns').textContent = formatINR(result.returns);
+  document.getElementById('rTotal').textContent = formatINR(result.value);
+
+  var body = document.getElementById('sipBody');
+  body.innerHTML = '';
+  result.yearRows.forEach(function(row){
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>Year ' + row.year + '</td><td>' + formatINR(row.invested) + '</td><td>' + formatINR(row.value) + '</td>';
+    body.appendChild(tr);
+  });
+
+  document.getElementById('resultPanel').classList.add('show');
+}
+
+function shareSip(){
+  if(!lastResult) return;
+  waShare('SIP Calculator', 'My ' + formatINR(lastResult.monthly) + '/month SIP could grow to ' + formatINR(lastResult.result.value) + ' in ' + lastResult.years + ' years');
+}
+
+async function downloadSipPdf(){
+  if(!lastResult) return;
+  var ctx = await uvPdfCreate();
+  var layout = uvPdfAddPage(ctx);
+  var page = layout.page;
+  var y = layout.contentTop;
+
+  page.drawText('SIP Returns Summary', { x: layout.margin, y: y, size: 18, font: ctx.fontBold });
+  y -= 26;
+  var lines = [
+    'Monthly SIP: ' + formatINR(lastResult.monthly),
+    'Expected Return: ' + lastResult.rate + '% per annum',
+    'Time Period: ' + lastResult.years + ' years',
+    'Total Invested: ' + formatINR(lastResult.result.invested),
+    'Estimated Returns: ' + formatINR(lastResult.result.returns),
+    'Total Value: ' + formatINR(lastResult.result.value)
+  ];
+  lines.forEach(function(l){ page.drawText(l, { x: layout.margin, y: y, size: 11, font: ctx.font }); y -= 16; });
+  y -= 10;
+
+  var columns = [
+    { header: 'Year', width: 100 },
+    { header: 'Invested', width: 205, align: 'right' },
+    { header: 'Value', width: 210, align: 'right' }
+  ];
+  var rows = lastResult.result.yearRows.map(function(r){ return ['Year ' + r.year, formatINR(r.invested), formatINR(r.value)]; });
+  uvPdfDrawTable(ctx, layout, layout.margin, y, columns, rows);
+
+  await uvPdfDownload(ctx, 'sip-summary.pdf');
+}
+</script>
+</body>
+</html>

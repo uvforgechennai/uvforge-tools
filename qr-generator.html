@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free QR Code Generator — Create QR Code Online India</title>
+<meta name="description" content="Free QR code generator. Create a QR code for any text, URL or UPI ID, choose size and color, and download it as a PNG image instantly — no login required.">
+<link rel="canonical" href="https://tools.uvforge.in/qr-generator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free QR Code Generator — Create QR Code Online India">
+<meta property="og:description" content="Create and download a QR code for text, URL or UPI ID, free.">
+<meta property="og:url" content="https://tools.uvforge.in/qr-generator.html">
+<meta property="og:image" content="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">
+{ "@context":"https://schema.org","@type":"WebApplication","name":"QR Code Generator","url":"https://tools.uvforge.in/qr-generator.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"publisher":{"@type":"Organization","name":"UV Forge"} }
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><img src="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png" alt="UV Forge logo"> UV Forge Tools</a>
+    <nav class="nav-links"><a href="/">All Tools</a></nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:24px;padding-bottom:24px">
+  <h1 class="tool-title">QR Code Generator</h1>
+  <p class="tool-desc">Create a QR code for text, a URL or a UPI payment ID.</p>
+
+  <div class="card">
+    <div class="field">
+      <label>Content Type</label>
+      <div class="toggle-group" id="qrType">
+        <button data-value="text" class="active">Text / URL</button>
+        <button data-value="upi">UPI ID</button>
+      </div>
+    </div>
+
+    <div id="textFields" class="field">
+      <label for="qrText">Text or URL</label>
+      <textarea id="qrText" rows="2">https://uvforge.in</textarea>
+    </div>
+
+    <div id="upiFields" style="display:none">
+      <div class="row row-2">
+        <div class="field"><label for="upiId">UPI ID</label><input type="text" id="upiId" placeholder="yourname@bank"></div>
+        <div class="field"><label for="upiName">Payee Name</label><input type="text" id="upiName" placeholder="Your Name"></div>
+      </div>
+      <div class="field"><label for="upiAmount">Amount (₹, optional)</label><input type="number" id="upiAmount" min="0"></div>
+    </div>
+
+    <div class="row row-2">
+      <div class="field">
+        <label for="qrSize">Size</label>
+        <select id="qrSize">
+          <option value="200">Small (200px)</option>
+          <option value="300" selected>Medium (300px)</option>
+          <option value="500">Large (500px)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="qrColor">Color</label>
+        <input type="color" id="qrColor" value="#2563EB" style="height:48px;padding:4px">
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="generateQR()">Generate QR Code</button>
+
+    <div class="result-panel" id="resultPanel">
+      <div class="qr-preview section-gap">
+        <canvas id="qrCanvas"></canvas>
+      </div>
+      <div class="btn-row section-gap">
+        <button class="btn btn-outline" onclick="downloadQR()">⬇ Download PNG</button>
+        <button class="btn btn-whatsapp" onclick="shareQR()">Share on WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><button class="faq-q">What can I create a QR code for?</button><div class="faq-a">You can create a QR code for any plain text, website URL, or a UPI payment ID — scanning a UPI QR opens the payer's UPI app pre-filled with your UPI ID, name and optional amount.</div></div>
+    <div class="faq-item"><button class="faq-q">Is my data uploaded anywhere?</button><div class="faq-a">No, the QR code is generated entirely in your browser using JavaScript. Nothing you type is sent to or stored on any server.</div></div>
+    <div class="faq-item"><button class="faq-q">What format is the downloaded QR code?</button><div class="faq-a">The QR code downloads as a PNG image at the size you selected, with a transparent-free white background suitable for printing or sharing.</div></div>
+    <div class="faq-item"><button class="faq-q">Will the UPI QR code work with any UPI app?</button><div class="faq-a">Yes, it's generated using the standard UPI deep-link format supported by Google Pay, PhonePe, Paytm and all other UPI-enabled apps in India.</div></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><a href="https://uvforge.in" target="_blank" rel="noopener">UV Forge</a> — Chennai's business automation agency.</p>
+    <p class="made-in-india">Made in India 🇮🇳</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="/assets/app.js"></script>
+<script src="/assets/share-utils.js"></script>
+<script>
+var qrType = 'text';
+initToggleGroup(document.getElementById('qrType'), function(v){
+  qrType = v;
+  document.getElementById('textFields').style.display = v === 'text' ? 'block' : 'none';
+  document.getElementById('upiFields').style.display = v === 'upi' ? 'block' : 'none';
+});
+
+function buildContent(){
+  if(qrType === 'upi'){
+    var id = document.getElementById('upiId').value.trim();
+    var name = document.getElementById('upiName').value.trim();
+    var amount = document.getElementById('upiAmount').value;
+    if(!id) return null;
+    var url = 'upi://pay?pa=' + encodeURIComponent(id) + '&cu=INR';
+    if(name) url += '&pn=' + encodeURIComponent(name);
+    if(amount) url += '&am=' + encodeURIComponent(amount);
+    return url;
+  }
+  var text = document.getElementById('qrText').value.trim();
+  return text || null;
+}
+
+function generateQR(){
+  var content = buildContent();
+  if(!content) return;
+  var size = parseInt(document.getElementById('qrSize').value);
+  var color = document.getElementById('qrColor').value;
+  var canvas = document.getElementById('qrCanvas');
+  QRCode.toCanvas(canvas, content, {
+    width: size,
+    margin: 2,
+    color: { dark: color, light: '#FFFFFF' }
+  }, function(err){
+    if(err) return;
+    document.getElementById('resultPanel').classList.add('show');
+  });
+}
+
+function downloadQR(){
+  var canvas = document.getElementById('qrCanvas');
+  var url = canvas.toDataURL('image/png');
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'qr-code.png';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function shareQR(){
+  waShare('QR Code Generator', 'I made a free QR code');
+}
+</script>
+</body>
+</html>

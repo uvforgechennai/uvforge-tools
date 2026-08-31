@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp Text Formatter — Bold Italic Free Online Tool</title>
+<meta name="description" content="Free WhatsApp text formatter. Make your WhatsApp messages bold, italic, strikethrough or monospace, then copy the formatted text and paste it straight into WhatsApp.">
+<link rel="canonical" href="https://tools.uvforge.in/whatsapp-formatter.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="WhatsApp Text Formatter — Bold Italic Free Online Tool">
+<meta property="og:description" content="Format WhatsApp messages with bold, italic, strikethrough & monospace, free.">
+<meta property="og:url" content="https://tools.uvforge.in/whatsapp-formatter.html">
+<meta property="og:image" content="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">
+{ "@context":"https://schema.org","@type":"WebApplication","name":"WhatsApp Text Formatter","url":"https://tools.uvforge.in/whatsapp-formatter.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"publisher":{"@type":"Organization","name":"UV Forge"} }
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><img src="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png" alt="UV Forge logo"> UV Forge Tools</a>
+    <nav class="nav-links"><a href="/">All Tools</a></nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:24px;padding-bottom:24px">
+  <h1 class="tool-title">WhatsApp Text Formatter</h1>
+  <p class="tool-desc">Select text below and click a style to format it for WhatsApp — then copy and paste.</p>
+
+  <div class="card">
+    <div class="wa-toolbar">
+      <button onclick="wrapSelection('*','*')"><b>Bold</b></button>
+      <button onclick="wrapSelection('_','_')"><i>Italic</i></button>
+      <button onclick="wrapSelection('~','~')"><s>Strike</s></button>
+      <button onclick="wrapSelection('```','```')" style="font-family:monospace">Mono</button>
+    </div>
+    <div class="field">
+      <label for="waText">Your Message</label>
+      <textarea id="waText" rows="6" placeholder="Type or paste your message here...">Hi! This is *important* and _urgent_.</textarea>
+    </div>
+    <button class="btn btn-primary" onclick="copyWa()">📋 Copy Formatted Text</button>
+    <div style="text-align:center;margin-top:10px"><span class="copy-badge" id="waBadge">✓ Copied to clipboard!</span></div>
+  </div>
+
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><button class="faq-q">How do I make WhatsApp text bold?</button><div class="faq-a">Select the text you want to bold in the box above and click "Bold" — it wraps your text with asterisks (*like this*), which WhatsApp renders as bold when you paste and send it.</div></div>
+    <div class="faq-item"><button class="faq-q">Why isn't my formatting showing up in WhatsApp?</button><div class="faq-a">WhatsApp formatting only appears after you send the message — while typing it may show the raw symbols (*_~). Make sure there are no extra spaces right after the symbol and the text you're wrapping.</div></div>
+    <div class="faq-item"><button class="faq-q">Can I combine bold, italic and strikethrough?</button><div class="faq-a">Yes, you can select the same text multiple times and apply different styles, e.g. *_bold italic_* combines both by nesting the symbols around your text.</div></div>
+    <div class="faq-item"><button class="faq-q">Does this work on WhatsApp Web and mobile?</button><div class="faq-a">Yes, the formatted text works identically on WhatsApp Web, Android and iOS since it uses WhatsApp's standard markdown-style formatting symbols.</div></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><a href="https://uvforge.in" target="_blank" rel="noopener">UV Forge</a> — Chennai's business automation agency.</p>
+    <p class="made-in-india">Made in India 🇮🇳</p>
+  </div>
+</footer>
+
+<script src="/assets/app.js"></script>
+<script>
+function wrapSelection(prefix, suffix){
+  var ta = document.getElementById('waText');
+  var start = ta.selectionStart, end = ta.selectionEnd;
+  var val = ta.value;
+  if(start === end){
+    ta.focus();
+    return;
+  }
+  var selected = val.slice(start, end);
+  ta.value = val.slice(0, start) + prefix + selected + suffix + val.slice(end);
+  ta.focus();
+  ta.selectionStart = start;
+  ta.selectionEnd = end + prefix.length + suffix.length;
+}
+
+function copyWa(){
+  var ta = document.getElementById('waText');
+  copyToClipboard(ta.value, document.getElementById('waBadge'));
+}
+</script>
+</body>
+</html>

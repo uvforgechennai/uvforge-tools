@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMI Calculator India — Free Loan EMI Calculator 2026</title>
+<meta name="description" content="Calculate your monthly loan EMI instantly. Free EMI calculator for home loan, car loan & personal loan with total interest, total payment and full amortization schedule PDF.">
+<link rel="canonical" href="https://tools.uvforge.in/emi-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="EMI Calculator India — Free Loan EMI Calculator 2026">
+<meta property="og:description" content="Calculate your monthly loan EMI instantly, free. Home loan, car loan & personal loan.">
+<meta property="og:url" content="https://tools.uvforge.in/emi-calculator.html">
+<meta property="og:image" content="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "EMI Calculator",
+  "url": "https://tools.uvforge.in/emi-calculator.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+  "publisher": { "@type": "Organization", "name": "UV Forge" }
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><img src="https://i.ibb.co/tTSHgc6J/uvforge-logo-trimmed.png" alt="UV Forge logo"> UV Forge Tools</a>
+    <nav class="nav-links"><a href="/">All Tools</a></nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:24px;padding-bottom:24px">
+  <h1 class="tool-title">EMI Calculator</h1>
+  <p class="tool-desc">Calculate your monthly loan EMI, total interest and full amortization schedule.</p>
+
+  <div class="card">
+    <div class="field">
+      <label for="loanAmount">Loan Amount (₹)</label>
+      <input type="number" id="loanAmount" value="1000000" min="0" inputmode="decimal">
+    </div>
+    <div class="row row-2">
+      <div class="field">
+        <label for="interestRate">Interest Rate (% per annum)</label>
+        <input type="number" id="interestRate" value="8.5" min="0" step="0.01" inputmode="decimal">
+      </div>
+      <div class="field">
+        <label for="tenure">Tenure</label>
+        <div style="display:flex;gap:10px;align-items:center">
+          <input type="number" id="tenure" value="20" min="1" inputmode="numeric" style="flex:1">
+          <div class="toggle-group" id="tenureUnit">
+            <button data-value="years" class="active">Years</button>
+            <button data-value="months">Months</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="calculateEMI()">Calculate EMI</button>
+
+    <div class="result-panel" id="resultPanel">
+      <div class="result-grid section-gap">
+        <div class="stat highlight"><div class="label">Monthly EMI</div><div class="value" id="rEmi">₹0</div></div>
+        <div class="stat"><div class="label">Total Interest</div><div class="value" id="rInterest">₹0</div></div>
+        <div class="stat"><div class="label">Total Payment</div><div class="value" id="rTotal">₹0</div></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="downloadEmiPdf()">⬇ Download PDF (Amortization Schedule)</button>
+        <button class="btn btn-whatsapp" onclick="shareEmi()">Share on WhatsApp</button>
+      </div>
+      <div class="section-gap">
+        <h3 style="margin-bottom:12px">Amortization Schedule (yearly summary)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Year</th><th>Principal Paid</th><th>Interest Paid</th><th>Balance</th></tr></thead>
+            <tbody id="scheduleBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <button class="faq-q">How is EMI calculated?</button>
+      <div class="faq-a">EMI is calculated using the formula EMI = P × r × (1+r)^n / ((1+r)^n − 1), where P is the loan principal, r is the monthly interest rate (annual rate ÷ 12 ÷ 100), and n is the number of monthly installments.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Does a higher tenure reduce my EMI?</button>
+      <div class="faq-a">Yes, a longer tenure lowers your monthly EMI amount, but increases the total interest you pay over the life of the loan. A shorter tenure means a higher EMI but lower total interest.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Is this EMI calculator accurate for home loans, car loans and personal loans?</button>
+      <div class="faq-a">Yes, the reducing-balance EMI formula used here applies to home loans, car loans, personal loans and most other amortizing loans in India. Actual bank EMI may vary slightly due to processing fees or rounding.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Can I download the amortization schedule as a PDF?</button>
+      <div class="faq-a">Yes, click "Download PDF" after calculating to get a full month-by-month amortization schedule PDF, generated entirely in your browser — no data is uploaded anywhere.</div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><a href="https://uvforge.in" target="_blank" rel="noopener">UV Forge</a> — Chennai's business automation agency.</p>
+    <p class="made-in-india">Made in India 🇮🇳</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="/assets/app.js"></script>
+<script src="/assets/pdf-utils.js"></script>
+<script src="/assets/share-utils.js"></script>
+<script>
+var tenureUnit = 'years';
+initToggleGroup(document.getElementById('tenureUnit'), function(v){ tenureUnit = v; });
+
+var lastResult = null;
+
+function computeSchedule(P, annualRate, months){
+  var r = annualRate / 12 / 100;
+  var emi = r === 0 ? P / months : P * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
+  var balance = P;
+  var rows = [];
+  var totalInterest = 0;
+  for(var m = 1; m <= months; m++){
+    var interest = balance * r;
+    var principal = emi - interest;
+    balance -= principal;
+    if(balance < 0) balance = 0;
+    totalInterest += interest;
+    rows.push({ month: m, principal: principal, interest: interest, balance: balance });
+  }
+  return { emi: emi, totalInterest: totalInterest, totalPayment: emi * months, rows: rows };
+}
+
+function yearlySummary(rows){
+  var years = {};
+  rows.forEach(function(row){
+    var y = Math.ceil(row.month / 12);
+    if(!years[y]) years[y] = { principal: 0, interest: 0, balance: row.balance };
+    years[y].principal += row.principal;
+    years[y].interest += row.interest;
+    years[y].balance = row.balance;
+  });
+  return Object.keys(years).map(function(y){ return Object.assign({ year: y }, years[y]); });
+}
+
+function calculateEMI(){
+  var P = parseFloat(document.getElementById('loanAmount').value) || 0;
+  var rate = parseFloat(document.getElementById('interestRate').value) || 0;
+  var tenureVal = parseFloat(document.getElementById('tenure').value) || 0;
+  var months = tenureUnit === 'years' ? Math.round(tenureVal * 12) : Math.round(tenureVal);
+  if(P <= 0 || months <= 0){ return; }
+
+  var result = computeSchedule(P, rate, months);
+  lastResult = { P: P, rate: rate, months: months, result: result };
+
+  document.getElementById('rEmi').textContent = formatINR(result.emi);
+  document.getElementById('rInterest').textContent = formatINR(result.totalInterest);
+  document.getElementById('rTotal').textContent = formatINR(result.totalPayment);
+
+  var body = document.getElementById('scheduleBody');
+  body.innerHTML = '';
+  yearlySummary(result.rows).forEach(function(y){
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>Year ' + y.year + '</td><td>' + formatINR(y.principal) + '</td><td>' + formatINR(y.interest) + '</td><td>' + formatINR(y.balance) + '</td>';
+    body.appendChild(tr);
+  });
+
+  document.getElementById('resultPanel').classList.add('show');
+}
+
+function shareEmi(){
+  if(!lastResult) return;
+  waShare('EMI Calculator', 'My monthly EMI for ' + formatINR(lastResult.P) + ' at ' + lastResult.rate + '% is ' + formatINR(lastResult.result.emi));
+}
+
+async function downloadEmiPdf(){
+  if(!lastResult) return;
+  var ctx = await uvPdfCreate();
+  var layout = uvPdfAddPage(ctx);
+  var page = layout.page;
+  var y = layout.contentTop;
+
+  page.drawText('EMI Amortization Schedule', { x: layout.margin, y: y, size: 18, font: ctx.fontBold });
+  y -= 26;
+  var lines = [
+    'Loan Amount: ' + formatINR(lastResult.P),
+    'Interest Rate: ' + lastResult.rate + '% per annum',
+    'Tenure: ' + lastResult.months + ' months',
+    'Monthly EMI: ' + formatINR(lastResult.result.emi),
+    'Total Interest: ' + formatINR(lastResult.result.totalInterest),
+    'Total Payment: ' + formatINR(lastResult.result.totalPayment)
+  ];
+  lines.forEach(function(l){
+    page.drawText(l, { x: layout.margin, y: y, size: 11, font: ctx.font });
+    y -= 16;
+  });
+  y -= 10;
+
+  var columns = [
+    { header: 'Month', width: 60 },
+    { header: 'Principal', width: 155, align: 'right' },
+    { header: 'Interest', width: 155, align: 'right' },
+    { header: 'Balance', width: 145, align: 'right' }
+  ];
+  var rows = lastResult.result.rows.map(function(r){
+    return [r.month, formatINR(r.principal), formatINR(r.interest), formatINR(r.balance)];
+  });
+  uvPdfDrawTable(ctx, layout, layout.margin, y, columns, rows);
+
+  await uvPdfDownload(ctx, 'emi-schedule.pdf');
+}
+</script>
+</body>
+</html>
