@@ -4,6 +4,90 @@
    Indian number-to-words, and small DOM helpers reused by tools.
    ============================================================ */
 
+/* ---- Persistent sidebar (all tools, grouped) injected on every page ----
+   Restructures header + main + footer into a sidebar/content shell. Purely
+   a DOM move at DOMContentLoaded time (after each page's own inline script
+   has already run), so it never touches element IDs, event bindings, or
+   per-page state — safe on every tool page. Adding tool #11: just add it
+   to the right group below (or a new group) — every page's sidebar updates
+   automatically, no per-page HTML edits needed. */
+var UV_TOOL_GROUPS = [
+  { category: 'Finance Calculators', tools: [
+    { name: 'EMI Calculator', url: '/emi-calculator.html' },
+    { name: 'SIP Calculator', url: '/sip-calculator.html' },
+    { name: 'HRA Exemption Calculator', url: '/hra-calculator.html' }
+  ]},
+  { category: 'Documents & Invoices', tools: [
+    { name: 'GST Invoice Generator', url: '/gst-invoice.html' },
+    { name: 'Salary Slip Generator', url: '/salary-slip.html' },
+    { name: 'Rent Receipt Generator', url: '/rent-receipt.html' }
+  ]},
+  { category: 'Everyday Utilities', tools: [
+    { name: 'Age Calculator', url: '/age-calculator.html' },
+    { name: 'WhatsApp Formatter', url: '/whatsapp-formatter.html' },
+    { name: 'Number to Words', url: '/number-to-words.html' },
+    { name: 'QR Code Generator', url: '/qr-generator.html' }
+  ]}
+];
+
+(function initSidebar(){
+  document.addEventListener('DOMContentLoaded', function(){
+    var header = document.querySelector('header.site-header');
+    var main = document.querySelector('main');
+    if(!header || !main) return;
+
+    function normalize(path){
+      path = path.replace(/index\.html$/, '').replace(/\.html$/, '');
+      return path === '' ? '/' : path;
+    }
+    var current = normalize(window.location.pathname);
+
+    var sidebar = document.createElement('aside');
+    sidebar.className = 'sidebar';
+    sidebar.id = 'sidebar';
+
+    var html = '<a href="/" class="sidebar-home' + (current === '/' ? ' active' : '') + '">🏠 All Tools</a>';
+    UV_TOOL_GROUPS.forEach(function(group){
+      html += '<div class="sidebar-group"><div class="sidebar-heading">' + group.category + '</div>';
+      group.tools.forEach(function(tool){
+        var active = normalize(tool.url) === current ? ' active' : '';
+        html += '<a href="' + tool.url + '" class="sidebar-link' + active + '">' + tool.name + '</a>';
+      });
+      html += '</div>';
+    });
+    sidebar.innerHTML = html;
+
+    var overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    overlay.onclick = function(){ sidebar.classList.remove('open'); overlay.classList.remove('show'); };
+
+    var content = document.createElement('div');
+    content.className = 'app-content';
+
+    var shell = document.createElement('div');
+    shell.className = 'app-shell';
+    shell.appendChild(sidebar);
+    shell.appendChild(content);
+
+    var footer = document.querySelector('footer.site-footer');
+    content.appendChild(main);
+    if(footer) content.appendChild(footer);
+    header.insertAdjacentElement('afterend', shell);
+    document.body.appendChild(overlay);
+
+    var toggle = document.createElement('button');
+    toggle.className = 'sidebar-toggle';
+    toggle.setAttribute('aria-label', 'Toggle tools menu');
+    toggle.innerHTML = '☰';
+    toggle.onclick = function(){
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('show');
+    };
+    var headerInner = header.querySelector('.header-inner');
+    if(headerInner) headerInner.insertBefore(toggle, headerInner.firstChild);
+  });
+})();
+
 /* ---- FAQ accordion + auto-generated FAQPage schema ---- */
 (function initFaq(){
   document.addEventListener('DOMContentLoaded', function(){

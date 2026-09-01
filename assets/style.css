@@ -34,6 +34,44 @@ img{max-width:100%}
 a{color:var(--purple-light);text-decoration:none}
 .container{max-width:1100px;margin:0 auto;padding:0 20px}
 
+/* ---------- App shell: persistent sidebar + content (injected by app.js) ---------- */
+.app-shell{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto}
+.sidebar{
+  width:240px;flex-shrink:0;box-sizing:border-box;
+  position:sticky;top:var(--header-h);
+  height:calc(100vh - var(--header-h));
+  overflow-y:auto;
+  padding:24px 16px 40px;
+  border-right:1px solid var(--border);
+  background:var(--bg2);
+}
+.sidebar-home{display:block;padding:10px 12px;border-radius:var(--radius-sm);font-weight:700;color:var(--text);margin-bottom:18px;font-family:'Syne',sans-serif;font-size:15px}
+.sidebar-home:hover,.sidebar-home.active{background:var(--purple);color:#fff}
+.sidebar-group{margin-bottom:22px}
+.sidebar-heading{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:0 12px;margin-bottom:8px}
+.sidebar-link{display:block;padding:9px 12px;border-radius:var(--radius-sm);font-size:14px;color:var(--muted);margin-bottom:2px}
+.sidebar-link:hover{background:var(--bg3);color:var(--text)}
+.sidebar-link.active{background:rgba(107,33,176,.18);color:var(--purple-light);font-weight:600}
+.app-content{flex:1;min-width:0}
+.sidebar-toggle{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:4px 8px;margin-right:4px;line-height:1}
+.sidebar-overlay{display:none}
+@media(max-width:900px){
+  .sidebar{
+    position:fixed;top:var(--header-h);left:0;bottom:0;
+    transform:translateX(-100%);
+    transition:transform .25s ease;
+    z-index:60;width:260px;height:calc(100vh - var(--header-h));
+    box-shadow:4px 0 24px rgba(0,0,0,.4);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-toggle{display:inline-block}
+  .sidebar-overlay{
+    display:none;position:fixed;inset:var(--header-h) 0 0 0;
+    background:rgba(0,0,0,.5);z-index:55;
+  }
+  .sidebar-overlay.show{display:block}
+}
+
 /* ---------- Header ---------- */
 .site-header{
   position:sticky;top:0;z-index:50;
